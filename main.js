@@ -63,8 +63,7 @@
             if ((AgregarMedioCobro == "Si") || (AgregarMedioCobro == "SI") || (AgregarMedioCobro == "si")){
                 console.log (AgregarMedioCobro);
                 let medioDeCobro2 = prompt("Ingrese el medio de cobro: (Tarjeta, Sepa, Clearpay) ");
-// ---- 2) VALIDAR QUE SEA UN MEDIO DE COBRO EXISTENTE ---- Tengo que corregir y hacer los while 2 y 7 juntos, porque ahora si pasa el while 2 y
-//  dp en el 7 ingreso uno no existente me pasa al switch directo------
+// ---- 2) VALIDAR QUE SEA UN MEDIO DE COBRO EXISTENTE 
                 while ((medioDeCobro2 != "Tarjeta") && (medioDeCobro2 != "Sepa") && (medioDeCobro2 != "Clearpay")){
                     medioDeCobro2 = prompt("Medio de cobro inexistente. Ingreselo nuevamente: (Tarjeta, Sepa, Clearpay) ");
                 }
@@ -141,4 +140,6 @@
             
 
 
-  
+  // ---- Tengo que corregir:
+    //  1) Hacer los while 2 y 7 juntos, porque ahora si pasa el while 2 y dp en el 7 ingreso uno no existente me pasa al switch directo
+    //  2) Agregar una opcion de ingresar "salir" para cerrar el programa
