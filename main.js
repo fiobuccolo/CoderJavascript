@@ -14,19 +14,46 @@
 
 
     let comisionSuscripcion = 0.005;
+    
     let comisionTarjetaFija = 0.25;
     let comisionSepaFija = 0.35;
-    let comisionTarjetaVariable = 0.014;
-    let comisionClearpay = 0.06;
-    let MontoTarjetaSucripcion = 0;
-    let MontoTarjetaUnico = 0;
-    let MontoSepaSuscripcion = 0;
-    let MontoSepaUnico = 0;
-    let MontoClearpayUnico = 0;
-    let CantidadCobrosSepa = 0;
-    let CantidadCobrosTarjeta = 0;
-
+    let comisionClearpayFija = 0;
     
+    let comisionTarjetaVariable = 0.014;
+    let comisionClearpayVariable = 0.06;
+    let comisionSepaVariable = 0;
+   
+    let montoTarjetaSuscripcion = 0;
+    let montoTarjetaUnico = 0;
+    
+    let montoSepaSuscripcion = 0;
+    let montoSepaUnico = 0;
+
+    let montoClearpaySuscripcion = 0;
+    let montoClearpayUnico = 0;
+
+    let montoTotalTarjeta = 0;
+    let montoTotalSepa = 0;
+    let montoTotalClearpay = 0;
+    let montoTotal = 0;
+  
+    let cantidadCobrosSepa = 0;
+    let cantidadCobrosTarjeta = 0;
+    let cantidadCobrosClearpay = 0;
+
+    let sumaComisionTarjetaVariable = 0; // comision por medio de pago variable
+    let sumaComisionTarjetaSuscripcion = 0; // comision por suscripcion
+    let sumaComisionTarjetaFijo = 0; // comision por medio de pago fijo
+
+    let sumaComisionSepaVariable = 0; // comision por medio de pago variable
+    let sumaComisionSepaSuscripcion = 0; // comision por suscripcion
+    let sumaComisionSepaFijo = 0; // comision por medio de pago fijo
+
+    let sumaComisionClearPayVariable = 0; // comision por medio de pago variable
+    let sumaComisionClearpaySuscripcion = 0; // comision por suscripcion
+    let sumaComisionClearypayFijo = 0; // comision por medio de pago fijo
+    
+
   
 // ---- 1) SELECCIONAR MEDIO DE COBRO ----
             let medioDeCobro1 = prompt("Ingrese el medio de cobro: (Tarjeta, Sepa, Clearpay) ");
@@ -35,21 +62,30 @@
             while ((medioDeCobro1 != "Tarjeta") && (medioDeCobro1 != "Sepa") && (medioDeCobro1 != "Clearpay")) {
                 medioDeCobro1 = prompt("Medio de cobro inexistente. Ingreselo nuevamente: (Tarjeta, Sepa, Clearpay) ");
                 } 
-// ---- 3) INGRESAR MONTOS Y CALCULAR COMISION PARA EL MEDIO SELECCIONADO ----
+// ---- 3) INGRESAR MONTOS ----
                 console.log (medioDeCobro1)
                     switch (medioDeCobro1){
                         case "Tarjeta":
-                            CantidadCobrosTarjeta = parseInt(prompt("ingrese la cantidad de cobros realizados con tarjeta"));
-                            MontoTarjetaSucripcion = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas por suscripción"));
-                            MontoTarjetaUnico = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas Unicas"));                    
+                            //inputs
+                        cantidadCobrosTarjeta = CantidadCobros (medioDeCobro1);
+                        montoTarjetaSuscripcion = MontoSuscripcion (medioDeCobro1);
+                        montoTarjetaUnico = MontoUnico (medioDeCobro1);
+                         // --- CODIGO ANTERIOR SIN FUNCIONES ---
+                            // CantidadCobrosTarjeta = parseInt(prompt("ingrese la cantidad de cobros realizados con tarjeta"));
+                            // MontoTarjetaSucripcion = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas por suscripción"));
+                            // MontoTarjetaUnico = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas Unicas"));   
                             break;
                         case "Sepa": 
-                        CantidadCobrosSepa = parseInt(prompt("ingrese la cantidad de cobros realizados con Sepa"));
-                        MontoSepaSucripcion = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas por suscripción"));
-                        MontoSepaUnico = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas Unicas"));
+                            //inputs
+                        cantidadCobrosSepa = CantidadCobros (medioDeCobro1);
+                        montoSepaSuscripcion = MontoSuscripcion (medioDeCobro1);
+                        montoSepaUnico = MontoUnico (medioDeCobro1);                                      
                             break;
                         case "Clearpay": 
-                        MontoClearPayUnico = parseInt(prompt("ingrese el monto cobrado con Clearpay en ventas Unicas"));
+                          //inputs
+                        // cantidadCobrosClearpay = CantidadCobros (medioDeCobro1);
+                        // montoClearpaySuscripcion = MontoSuscripcion (medioDeCobro1);
+                        montoClearpayUnico = MontoUnico (medioDeCobro1);                       
                             break;
                         default: 
                         alert ("Medio de cobro inexistente");
@@ -71,21 +107,24 @@
                 while (medioDeCobro1 === medioDeCobro2){
                 medioDeCobro2 = prompt("Medio de cobro ya ingresado. Seleccione otro: (Tarjeta, Sepa, Clearpay) ");
                 }
-// ---- 3) INGRESAR MONTOS Y CALCULAR COMISION PARA EL SEGUNDO MEDIO SELECCIONADO ----
+// ---- 3) INGRESAR MONTOS ----
         console.log ("switch 2")
                 switch (medioDeCobro2){
                     case "Tarjeta":
-                        CantidadCobrosTarjeta = parseInt(prompt("ingrese la cantidad de cobros realizados con tarjeta"));
-                        MontoTarjetaSucripcion = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas por suscripción"));
-                        MontoTarjetaUnico = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas Unicas"));
+                        cantidadCobrosTarjeta = CantidadCobros (medioDeCobro2);
+                        montoTarjetaSuscripcion = MontoSuscripcion (medioDeCobro2);
+                        montoTarjetaUnico = MontoUnico (medioDeCobro2);
                         break;
                     case "Sepa": 
-                    CantidadCobrosSepa = parseInt(prompt("ingrese la cantidad de cobros realizados con Sepa"));
-                    MontoSepaSucripcion = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas por suscripción"));
-                    MontoSepaUnico = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas Unicas"));
+                        cantidadCobrosSepa = CantidadCobros (medioDeCobro2);
+                        montoSepaSuscripcion = MontoSuscripcion (medioDeCobro2);
+                        montoSepaUnico = MontoUnico (medioDeCobro2);  
                         break;
                     case "Clearpay": 
-                    MontoClearPayUnico = parseInt(prompt("ingrese el monto cobrado con Clearpay en ventas Unicas"));
+                    // cantidadCobrosClearpay = CantidadCobros (medioDeCobro2);
+                     // montoClearpaySuscripcion = MontoSuscripcion (medioDeCobro2);
+                        montoClearpayUnico = MontoUnico (medioDeCobro2);       
+                    
                     break;
                     default: 
                     alert ("Medio de cobro inexistente");
@@ -109,33 +148,70 @@
         console.log ("switch 3")
         switch (medioDeCobro3){
             case "Tarjeta":
-                CantidadCobrosTarjeta = parseInt(prompt("ingrese la cantidad de cobros realizados con tarjeta"));
-                MontoTarjetaSucripcion = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas por suscripción"));
-                MontoTarjetaUnico = parseInt(prompt("ingrese el monto cobrado con tarjeta en ventas Unicas"));
-                break;
+            cantidadCobrosTarjeta = CantidadCobros (medioDeCobro3);
+            montoTarjetaSuscripcion = MontoSuscripcion (medioDeCobro3);
+            montoTarjetaUnico = MontoUnico (medioDeCobro3);
+            break;
             case "Sepa": 
-            CantidadCobrosSepa = parseInt(prompt("ingrese la cantidad de cobros realizados con Sepa"));
-            MontoSepaSucripcion = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas por suscripción"));
-            MontoSepaUnico = parseInt(prompt("ingrese el monto cobrado con Sepa en ventas Unicas"));
-                break;
+            cantidadCobrosSepa = CantidadCobros (medioDeCobro3);
+            montoSepaSuscripcion = MontoSuscripcion (medioDeCobro3);
+            montoSepaUnico = MontoUnico (medioDeCobro3); 
+            break;
             case "Clearpay": 
-            MontoClearPayUnico = parseInt(prompt("ingrese el monto cobrado con Clearpay en ventas Unicas"));
+             // cantidadCobrosClearpay = CantidadCobros (medioDeCobro3);
+            // montoClearpaySuscripcion = MontoSuscripcion (medioDeCobro3);
+            montoClearpayUnico = MontoUnico (medioDeCobro3);  
             break;
             default: 
             alert ("Medio de cobro inexistente");
             break;
          }
         } }
+         //calculos tarjeta
+                montoTotalTarjeta = SumaMontoTotal (montoTarjetaSuscripcion,montoTarjetaUnico,0)
+                sumaComisionTarjetaVariable = CalculoComisiones (montoTotalTarjeta,comisionTarjetaVariable)
+                console.log (sumaComisionTarjetaVariable)
+                sumaComisionTarjetaSuscripcion = CalculoComisiones (montoTarjetaSuscripcion,comisionSuscripcion)
+                console.log (sumaComisionTarjetaSuscripcion)
+                sumaComisionTarjetaFijo = CalculoComisiones (cantidadCobrosTarjeta,comisionTarjetaFija)  
+                console.log (sumaComisionTarjetaFijo)    
+                let comisionesCobrarTarjeta = SumaMontoTotal (sumaComisionTarjetaVariable, sumaComisionTarjetaSuscripcion, sumaComisionTarjetaFijo)
+                console.log (comisionesCobrarTarjeta)
+
+                    //calculoss sepa
+                montoTotalSepa = SumaMontoTotal (montoSepaSuscripcion,montoSepaUnico,0)
+                sumaComisionSepaVariable = CalculoComisiones (montoTotalSepa,comisionSepaVariable)
+                sumaComisionSepaSuscripcion = CalculoComisiones (montoSepaSuscripcion,0)
+                sumaComisionSepaFijo = CalculoComisiones (cantidadCobrosSepa,comisionSepaFija)
+                let comisionesCobrarSepa = SumaMontoTotal (sumaComisionSepaVariable, sumaComisionSepaSuscripcion, sumaComisionSepaFijo)
+                console.log (comisionesCobrarSepa)
+                
+                //calculos clearpay
+                montoTotalClearpay = SumaMontoTotal (montoClearpaySuscripcion,montoClearpayUnico,0)
+                sumaComisionClearPayVariable = CalculoComisiones (montoTotalClearpay,comisionClearpayVariable)
+                sumaComisionClearpaySuscripcion = CalculoComisiones (montoClearpaySuscripcion,0)
+                sumaComisionClearypayFijo = CalculoComisiones (cantidadCobrosClearpay,comisionClearpayFija)
+                let comisionesCobrarClearypay= SumaMontoTotal (sumaComisionClearPayVariable, sumaComisionClearpaySuscripcion, sumaComisionClearypayFijo)
+                console.log (comisionesCobrarClearypay)
+
+                let comisionesCobrarTotal = SumaMontoTotal (comisionesCobrarClearypay, comisionesCobrarSepa, comisionesCobrarTarjeta)
+                console.log (comisionesCobrarTotal)
+                alert ("El total de las comisiones es de " + comisionesCobrarTotal.toFixed(2))
+               
+                
 
     //    --- Calculo comisiones --- 
-        let comisionesTarjeta = (MontoTarjetaSucripcion*comisionTarjetaVariable)+(MontoTarjetaSucripcion*comisionSuscripcion)+(CantidadCobrosTarjeta*comisionTarjetaFija);
-        console.log (comisionesTarjeta);
-        let comisionesSepa = ((MontoSepaSuscripcion*comisionSuscripcion)+(CantidadCobrosSepa*comisionSepaFija));
-        console.log (comisionesSepa);
-        let comisionesClearpay = (MontoClearpayUnico*comisionClearpay);
-        console.log (comisionesClearpay);
-        let comisionesTotales = (comisionesTarjeta+comisionesClearpay+comisionesSepa);
-         alert ("el total de las comisiones es de " + comisionesTotales)
+    //   ----- CODIGO ANTERIOR -----
+    //     let comisionesTarjeta = (MontoTarjetaSucripcion*comisionTarjetaVariable)+(MontoTarjetaSucripcion*comisionSuscripcion)+(CantidadCobrosTarjeta*comisionTarjetaFija);
+    //     console.log (comisionesTarjeta);
+    //     let comisionesSepa = ((MontoSepaSuscripcion*comisionSuscripcion)+(CantidadCobrosSepa*comisionSepaFija));
+    //     console.log (comisionesSepa);
+    //     let comisionesClearpay = (MontoClearpayUnico*comisionClearpayVariable);
+    //     console.log (comisionesClearpay);
+    //     let comisionesTotales = (comisionesTarjeta+comisionesClearpay+comisionesSepa);
+
+
+        //  alert ("el total de las comisiones es de " + comisionesTotales)
         
             
 
@@ -143,3 +219,29 @@
   // ---- Tengo que corregir:
     //  1) Hacer los while 2 y 7 juntos, porque ahora si pasa el while 2 y dp en el 7 ingreso uno no existente me pasa al switch directo
     //  2) Agregar una opcion de ingresar "salir" para cerrar el programa
+
+
+    
+function CantidadCobros (valorA){
+  return parseInt(prompt("Ingrese la cantidad de cobros realizados con " + valorA));
+}
+        
+function MontoSuscripcion (valorA){
+     return parseInt(prompt("ingrese el monto cobrado con " + valorA + " en ventas por suscripción"));
+}
+function MontoUnico (valorA) {
+ return parseInt(prompt("ingrese el monto cobrado con " + valorA + " en ventas unicas"));
+ }
+ 
+ function SumaMontoTotal (valorA,valorB,valorC) {
+   return valorA + valorB + valorC
+ }
+
+ function CalculoComisiones (valorA,valorB) {
+   return valorA * valorB
+  }
+
+
+
+  
+ 
