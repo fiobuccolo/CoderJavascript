@@ -197,11 +197,11 @@ function CalculoComisionesTarjeta (cuit) {
         console.log (totalCobradoTarjeta);
         let cantidadCobrosTarjeta = arrayCobrosTarjeta.length
         console.log (cantidadCobrosTarjeta);
-        comisionesPorSuscripcion(totalCobradoTarjetaSuscripcion);
-        comisionesFijas(cantidadCobrosTarjeta);
-        comisionesVariables (totalCobradoTarjeta);
-        //  let comisionesTotales = sumaComisionTarjetaSuscripcion + sumaComisionTarjetaFija + sumaComisionTarjetaVariable
-        //  console.log (comisionesTotales);
+        let sumaComisionTarjetaSuscricion = comisionesPorSuscripcion(totalCobradoTarjetaSuscripcion);
+        let sumaComisionTarjetaFijas = comisionesFijas(cantidadCobrosTarjeta);
+        let sumaComisionTarjetaVariables = comisionesVariables (totalCobradoTarjeta);
+       let comisionesTotales = sumaComisionTarjetaSuscricion + sumaComisionTarjetaFijas + sumaComisionTarjetaVariables
+        console.log (comisionesTotales);
 }
 
 
@@ -242,6 +242,7 @@ function CalculoComisionesTarjeta (cuit) {
         console.log (sumaComisionTarjetaVariable);
         return sumaComisionTarjetaVariable;
     }
+
 
 
 
