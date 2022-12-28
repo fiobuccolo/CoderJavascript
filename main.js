@@ -39,10 +39,10 @@
 
    
     class Cobro {
-        constructor(cliente,medioDePago,monto,plan,fecha){
-        this.cliente = cliente;
+        constructor(cuit,medioDePago,monto,plan,fecha){
+        this.cuit = parseInt(cuit);
         this.medioDePago = medioDePago;
-        this.monto = monto;
+        this.monto = parseInt(monto);
         this.plan = plan;
         this.fecha = fecha || new Date();
         }
@@ -64,7 +64,7 @@
     class Cliente {
         constructor(nombre, cuit,uelzPlan){
         this.nombre = nombre;
-        this.cuit = cuit;
+        this.cuit = parseint(cuit);
         this.uelzplan = uelzPlan;
         }
     };
@@ -97,10 +97,10 @@
 // CARGAR COBROS y CLIENTES DESDE EL LOCAL STORAGE
 
     if(localStorage.getItem("clientes")){
-        carrito = JSON.parse(localStorage.getItem("clientes"))
+        arrayClientes = JSON.parse(localStorage.getItem("clientes"))
     }
     if(localStorage.getItem("cobros")){
-        carrito = JSON.parse(localStorage.getItem("cobros"))
+        arrayCobros = JSON.parse(localStorage.getItem("cobros"))
     }
 
 
@@ -329,28 +329,29 @@
             }
 
         
-                const retornarCobros = () => {
+                function retornarCobros (cuit) {
+                    console.log(cuit)
                     const arrayCobrosJSON = localStorage.getItem("cobros");
                     const arrayCobros = JSON.parse(arrayCobrosJSON); 
-                    // console.log(arrayCobros)
-                    // const arrayCobrosDelCliente = arrayCobros.filter(Cobro => Cobro.cliente === cuit);
-                    //         console.log ("  Filter: ")
-                    //         console.log (arrayCobrosDelCliente);
-                    //         console.log(arrayCobrosDelCliente.length)
-                    let totalcobrado = 0;
-                    console.log(totalcobrado);
-                    // arrayCobros.reduce((acumulador, elemento) => acumulador + elemento.precio,0);
-                    arrayCobros.forEach(cobro => {
-                        totalcobrado += cobro.monto;
-                        console.log(totalcobrado);
+                    console.log(arrayCobros)
+                    arrayCobros.forEach(cobro =>{
+                        console.log(cobro.cuit)
                     })
-                    console.log("hola")
-                    console.log(totalcobrado)
+                    const arrayCobrosDelCliente = arrayCobros.filter(cobro => cobro.cuit === cuit);
+                            console.log ("  Filter: ")
+                            console.log (arrayCobrosDelCliente);
+                            console.log(arrayCobrosDelCliente.length)
+                    let totalcobrado = 0;
+                    //arrayCobros.reduce((acumulador, elemento) => acumulador + elemento.precio,0);
+                    arrayCobrosDelCliente.forEach(cobro =>{
+                            totalcobrado += cobro.monto;
+                            // += es igual a poner totalCompra = totalCompra+producto.precio*producto.cantidad
+                        })
                     return totalcobrado
                 }
           
 
-               
+            
 
 
 
@@ -411,7 +412,7 @@ function CalculoComisionesTarjeta (cuit) {
         .filter (MedioDePago => MedioDePago.nombre == "tarjeta")
         .map (MedioDePago => MedioDePago.comisionSuscripcion);
         let sumaComisionTarjetaSuscripcion = comisionTarjetaSuscripción * totalCobrado;
-        console.log ("Comsiones suscripcion");
+        console.log ("Comisiones suscripcion");
         console.log (comisionTarjetaSuscripción);
         console.log (sumaComisionTarjetaSuscripcion);
         return sumaComisionTarjetaSuscripcion;
