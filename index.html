@@ -4,19 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>UELZ APP</title>
+      <!-- CSS only -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- Mi CSS -->
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Curso javascript</h1>
-    <h2>Calculo comisiones</h2>
-    <p>Calculardora para saber cuales vas a ser las comisiones por sus cobros</p>
-    <p>Existen 3 metodos de cobro: Tarjeta, Sepa y Clearpay</p>
-    <h3>Comisiones Tarjeta </h3>
-    <p>1,4% sobre el monto total transaccionado + 0,25$ por transaccion. Ademas se le suma un 0,5% para el monto cobrado en ventas por suscripción</p>
-    <h3>Comisiones Sepa </h3>
-    <p> + 0,35$ por transaccion.</p>
-    <h3>Comisiones Clearpay </h3>
-    <p>6% sobre el monto total transaccionado</p>
+<body class="container">
+  
+    <h1 class="text-center">Uelz APP</h1>
+     <hr>
+    <!-- boton Registro -->
+    <button class="btn colorBoton" id="DarseDeAlta">Registrate en Uelz</button>
+    <button class="btn colorBoton" id="NuevoCobro">Nuevo Cobro</button>
+    <button class="btn colorBoton" id="ConsultarCobros">Consulta tus cobros</button>
+    <button class="btn colorBoton" id="CalcularComisiones">Calcula tus comisiones</button>
+    <button class="btn colorBoton" id="EliminarCobro">Eliminar un cobro</button>
+
+     <!-- // ---------------------------------------------------------------- -->
+     
+  
+
+        <!-- Contenedor formulario de registro -->
+            <div id="contenedorDarseDeAlta" class="row"></div>
+            <!-- Contenedor Nuevo cobro -->
+            <div id="contenedorNuevoCobro" class="row"></div>
+
+             <!-- Contenedor consultar cobro -->
+             <div id="contenedorConsultarCobros" class="row"></div>
+  
+    <!-- JavaScript Bundle with Popper -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  
 
     <script src="main.js"></script>
 </body>
