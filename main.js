@@ -353,10 +353,15 @@
                               <div>
                                   <hr>
                                   <h2>Cobros del cliente <span>${cuit}</span> </h2>
-                        
+                                  <ul class="list-group list-group-horizontal">
+                                  <li class="list-group-item list-group-item-action fw-bold">Monto</li>
+                                  <li class="list-group-item list-group-item-action fw-bold">Medio De Pago</li>
+                                  <li class="list-group-item list-group-item-action fw-bold">Tipo de Plan</li>
+                                  </ul> 
                               </div>  
                               `
-                      contenedorConsultarCobros.appendChild(tituloCliente);   
+                      contenedorConsultarCobros.appendChild(tituloCliente);  
+                      
                        
                     arrayCobrosDelCliente.forEach(cobro =>{
                             totalcobrado += cobro.monto;
@@ -365,9 +370,9 @@
                             TablaCobros.innerHTML=`
                                      <div>
                                      <ul class="list-group list-group-horizontal">
-                                            <li class="list-group-item">${cobro.monto}</li>
-                                            <li class="list-group-item">${cobro.medioDePago}</li>
-                                            <li class="list-group-item">${cobro.plan}</li>
+                                            <li class="list-group-item list-group-item-action">${cobro.monto}</li>
+                                            <li class="list-group-item list-group-item-action">${cobro.medioDePago}</li>
+                                            <li class="list-group-item list-group-item-action">${cobro.plan}</li>
                                     </ul>
                                      </div>             `
                             contenedorConsultarCobros.appendChild(TablaCobros);                    
