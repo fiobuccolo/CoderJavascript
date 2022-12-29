@@ -64,7 +64,7 @@
     class Cliente {
         constructor(nombre, cuit,uelzPlan){
         this.nombre = nombre;
-        this.cuit = parseint(cuit);
+        this.cuit = parseInt(cuit);
         this.uelzplan = uelzPlan;
         }
     };
@@ -156,6 +156,7 @@
                  //LIMPIAR HTML
                 contenedorDarseDeAlta.innerHTML = "";  
                 contenedorNuevoCobro.innerHTML = "";   
+                contenedorConsultarCobros.innerHTML = "";
                     //Crear formulario
                     const alta = document.createElement("alta");
                     alta.innerHTML =`<div>
@@ -217,6 +218,7 @@
                 //LIMPIAR HTML
                  contenedorDarseDeAlta.innerHTML = "";
                  contenedorNuevoCobro.innerHTML = "";
+                 contenedorConsultarCobros.innerHTML = "";
                 //Crear formulario
                 const altaCobro = document.createElement("altaCobro");
                 altaCobro.innerHTML =`<div>
@@ -262,8 +264,11 @@
                     const monto = document.getElementById("monto").value;
                     const plan = document.getElementById("ValorPlan").value;               
                 // Crear un objeto cobro
+                console.log(cuit, typeof cuit)
+                console.log(monto, typeof monto)
                 let fecha = new Date()
                 const cobro = new Cobro (cuit,medioDePago,monto,plan);
+                console.log(cobro.cuit, typeof cobro.cuit)
                 arrayCobros.push(cobro);
                 console.log (arrayCobros);
                 // reseteamos el formulario
@@ -325,35 +330,98 @@
                   console.log(totalcobrado);
                   // reseteamos el formulario
                    formulario.reset();     
+                   
                 })   
             }
-
         
                 function retornarCobros (cuit) {
-                    console.log(cuit)
-                    const arrayCobrosJSON = localStorage.getItem("cobros");
-                    const arrayCobros = JSON.parse(arrayCobrosJSON); 
-                    console.log(arrayCobros)
-                    arrayCobros.forEach(cobro =>{
-                        console.log(cobro.cuit)
-                    })
-                    const arrayCobrosDelCliente = arrayCobros.filter(cobro => cobro.cuit === cuit);
-                            console.log ("  Filter: ")
-                            console.log (arrayCobrosDelCliente);
-                            console.log(arrayCobrosDelCliente.length)
+                    let arrayCobrosDelCliente = filtrarCobrosDelCliente (cuit); 
+                    let arrayCobrosDelClienteTarjeta = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"tarjeta");
+                    let arrayCobrosDelClienteSepa = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"sepa");
+                    let arrayCobrosDelClienteAfterPay= filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"afterpay");
+                    let arrayCobrosTarjetaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"suscripcion");
+                    let arrayCobrostarjetaUnico = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"unico");
+                    let arrayCobrosDelClienteSepaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"suscripcion");
+                    let arrayCobrosDelClienteSepaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"unico");
+                    let arrayCobrosDelClienteAfterPaySuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"suscripcion");
+                    let arrayCobrosDelClienteAfterPayaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"unico");
                     let totalcobrado = 0;
-                    //arrayCobros.reduce((acumulador, elemento) => acumulador + elemento.precio,0);
+                    
+
+                    const tituloCliente =document.createElement("tituloCliente")
+                    tituloCliente.innerHTML=`
+                              <div>
+                                  <hr>
+                                  <h2>Cobros del cliente <span>${cuit}</span> </h2>
+                        
+                              </div>  
+                              `
+                      contenedorConsultarCobros.appendChild(tituloCliente);   
+                       
                     arrayCobrosDelCliente.forEach(cobro =>{
                             totalcobrado += cobro.monto;
                             // += es igual a poner totalCompra = totalCompra+producto.precio*producto.cantidad
-                        })
+                            const TablaCobros =document.createElement("TablaCobros")
+                            TablaCobros.innerHTML=`
+                                     <div>
+                                     <ul class="list-group list-group-horizontal">
+                                            <li class="list-group-item">${cobro.monto}</li>
+                                            <li class="list-group-item">${cobro.medioDePago}</li>
+                                            <li class="list-group-item">${cobro.plan}</li>
+                                    </ul>
+                                     </div>             `
+                            contenedorConsultarCobros.appendChild(TablaCobros);                    
+                       })
+                       const totalCobradoHtml =document.createElement("totalCobradoHtml")
+                      totalCobradoHtml.innerHTML=`
+                                <div>
+                                    <h3>El total de cobros es de <span>$${totalcobrado}</span></h3>
+                                    <hr>
+                                </div>  
+                                `
+                        contenedorConsultarCobros.appendChild(totalCobradoHtml);   
                     return totalcobrado
+                    
                 }
+
+
           
-
-            
-
-
+      // 4) Funcion CONSULTAR COMISIONES 
+      const consultarComisiones2 = () =>{
+        // ---- AGREGAR NODOS -----
+        const contenedorConsultarComisiones = document.getElementById("contenedorConsultarComisiones");
+        //LIMPIAR HTML
+         contenedorDarseDeAlta.innerHTML = "";
+         contenedorNuevoCobro.innerHTML = "";
+         contenedorConsultarCobros.innerHTML = "";
+         contenedorConsultarComisiones.innerHTML = "";
+        //Crear formulario
+        const consultaComisiones = document.createElement("consultaComisiones");
+        consultaComisiones.innerHTML =`<div>
+                            <p>Ingrese el cuit del cliente</p>
+                            <form id="formulario">
+                                <div class="mb-3">
+                                    <label for="cuit" class="form-label">Cuit de la empresa</label>
+                                    <input type="text" id="cuit" class="form-control" required>
+                                </div>
+                               
+                                <button id="consultarCobrosConCuit" class="btn btn-primary">Consultar</button>
+                              </form>
+                                `
+      // Asociar el formulario al padre 
+      contenedorConsultarComisiones.appendChild(consultaComisiones);
+       // EVENTO SUBMIT
+       formulario.addEventListener("submit", ()=>{
+          //Evito el comportamiento por default de formulario, de recargar la pagina
+          event.preventDefault();  
+         const cuit = document.getElementById("cuit").value;
+        console.log(cuit);
+        let totalcomisiones = retornarComisiones(cuit);
+        console.log(totalcomisiones);
+        // reseteamos el formulario
+         formulario.reset();     
+      })   
+  }
 
 
         // Funcion para calcular comisiones
@@ -376,9 +444,55 @@
             alert("Gracias por utilizar nuestros servicios")
         }
 
+//// ------------  FUNCIONES PARA FILTRAR y SUMAR COBROS ----------
+          
+    function filtrarCobrosDelCliente (cuit){
+                cuit = parseInt(cuit)
+                const arrayCobrosJSON = localStorage.getItem("cobros");
+                const arrayCobros = JSON.parse(arrayCobrosJSON); 
+                console.log(arrayCobros)
+                const arrayCobrosDelCliente = arrayCobros.filter(cobro => cobro.cuit === cuit);
+                        console.log ("  Filter: arrayCobrosDelCliente")
+                        console.log (arrayCobrosDelCliente);
+                        console.log(arrayCobrosDelCliente.length)
+                return arrayCobrosDelCliente;
+                }
+     function  filtrarCobrosDelClienteMediodePago(array,medioDePago){
+         // FILTRO COBROS por Medio de apgo
+         const arrayCobrosDelClienteMedioDePago= array.filter(cobro => cobro.medioDePago === medioDePago);
+         console.log ("  Filter: arrayCobrosDelClienteMedioDEPAGO")
+         console.log (arrayCobrosDelClienteMedioDePago);
+         console.log(arrayCobrosDelClienteMedioDePago.length)
+         return arrayCobrosDelClienteMedioDePago;
+     }
+
+              
+     function filtrarCobrosDelClienteMedioDePagoPlan (array,plan) {
+                    // FILTRO COBROS tarjeta Suscripción
+                    const arrayCobrosDelClienteTarjetaPlan = array.filter(cobro => cobro.plan === plan);
+                    console.log ("  Filter: arrayCobrosDelClienteTarjetaPlan ")
+                    console.log (arrayCobrosDelClienteTarjetaPlan);
+                    console.log(arrayCobrosDelClienteTarjetaPlan.length)
+                    return arrayCobrosDelClienteTarjetaPlan;
+               }       
+    
+               
+
 
 
 //// ------------  FUNCIONES CALCULO COMISIONES ----------
+
+//function calculoComisiones(cuit)
+// array cobros del cliente
+//array cobros del cliente con tarjeta
+//array cobros del cliente con sepa
+//array cobros del cliente con after pay
+// Sumarizar montos de los 4 array
+// contar transacciones de 4 array
+//llamar a las fuciones de calculo de comisiones por medio de pago
+
+
+
 
 function CalculoComisionesTarjeta (cuit) {
         // Filtro y totalizador para cobros de suscripción con tarjeta
