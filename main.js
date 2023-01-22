@@ -44,7 +44,7 @@
         this.medioDePago = medioDePago;
         this.monto = parseInt(monto);
         this.plan = plan;
-        this.fecha = fecha || new Date();
+        this.fecha = fecha ||  new Date();
         }
     };
     // COMENTO LOS COBROS PORQUE EN PREENTREGA LOS CREAMOS DESDE input de datos
@@ -61,20 +61,13 @@
     // Creamos el array de cobros 
     let arrayCobros = [];
 
-    class Cliente {
-        constructor(nombre, cuit,uelzPlan){
-        this.nombre = nombre;
-        this.cuit = parseInt(cuit);
-        this.uelzplan = uelzPlan;
-        }
-    };
+   
     // COMENTO LOS CLIENTES PORQUE EN PREENTREGA LOS CREAMOS DESDE input de datos
     // const cliente1 = new Cliente ("Empresa1",12033229,"Free");
     // const cliente2 = new Cliente ("Empresa 2",32425202,"Free");
     // const cliente3 = new Cliente ("Empresa 3",29989213,"Free");
 
-     // Creamos el array de clientes 
-    let arrayClientes = [];
+   
 
     class MedioDePago {
         constructor(nombre,comisionFija,comisionVariable,comisionSuscripcion){
@@ -88,10 +81,10 @@
 
       const tarjeta = new MedioDePago ("tarjeta",0.25,0.014,0.005);
       const sepa = new MedioDePago ("sepa",0.35,0,0);
-      const afterclay = new MedioDePago ("afterclay",0,0.06,0);
+      const afterpay = new MedioDePago ("afterpay",0,0.06,0);
 
       
-      const arrayMedioDePago = [tarjeta,sepa,afterclay];
+      const arrayMedioDePago = [tarjeta,sepa,afterpay];
       console.log (arrayMedioDePago);
 
 // CARGAR COBROS y CLIENTES DESDE EL LOCAL STORAGE
@@ -103,6 +96,32 @@
         arrayCobros = JSON.parse(localStorage.getItem("cobros"))
     }
 
+
+
+    const welcomeMessage =document.getElementById("welcomeMessage");
+    
+    
+    function welcome () {
+        
+        console.log("hola")
+        const companyNameJSON = localStorage.getItem("clientes");
+        const cliente = JSON.parse(companyNameJSON);
+        console.log(cliente);
+
+        cliente.forEach(cliente => {
+            welcomeMessage.innerHTML=`
+            <div>
+                <h2>bienvenido <span>${cliente.companyName}</span></h2>
+                <hr>
+            </div>  
+            `
+        });
+
+ 
+    
+    }
+
+  
 
 
 
@@ -119,11 +138,7 @@
 
         // ---------- ACCIONES EN CTA ---------------
         
-        // 1) Funcion para Alta de cliente 
-        const DarseDeAlta = document.getElementById("DarseDeAlta");
-        DarseDeAlta.addEventListener("click",()=>{
-            mostrarDarseDeAlta();
-        });
+       
         // 2) Funcion REGISTRAR NUEVO COBRO 
         const NuevoCobro = document.getElementById("NuevoCobro");
        NuevoCobro.addEventListener("click",()=>{
@@ -131,84 +146,23 @@
         });
         // 3) Funcion CALCULAR COMISIONES
         const CalcularComisiones = document.getElementById("CalcularComisiones");
-        DarseDeAlta.addEventListener("click",()=>{
-            //llamar ala funcion que corresponda
+        CalcularComisiones.addEventListener("click",()=>{
+            consultarComisiones2();
         });
         // 4) Funcion CONSULTAR COBROS 
         const ConsultarCobros = document.getElementById("ConsultarCobros");
-        ConsultarCobros.addEventListener("click",()=>{
+        ConsultarCobros.addEventListener("click",()=>{     
             consultarCobros();
         });
         // 5) Funcion ELIMINAR COBRO 
-        const EliminarCobro = document.getElementById("EliminarCobro");
-        DarseDeAlta.addEventListener("click",()=>{
+        // const EliminarCobro = document.getElementById("EliminarCobro");
+        // EliminarCobro.addEventListener("click",()=>{
              //llamar ala funcion que corresponda
-        });
+        // });
 
 
          /**  ---------- LLAMADO A FUNCIONES DESDE CTA PRIMARIOS --------------- */
 
-
-        // 1) Funcion para Alta de cliente          
-            const mostrarDarseDeAlta =()=>{
-                 // ---- AGREGAR NODOS -----
-                const contenedorDarseDeAlta = document.getElementById("contenedorDarseDeAlta");
-                 //LIMPIAR HTML
-                contenedorDarseDeAlta.innerHTML = "";  
-                contenedorNuevoCobro.innerHTML = "";   
-                contenedorConsultarCobros.innerHTML = "";
-                    //Crear formulario
-                    const alta = document.createElement("alta");
-                    alta.innerHTML =`<div>
-                                        <p>Ingresa tus datos</p>
-                                        <form id="formulario">
-                                            <div class="mb-3">
-                                                <label for="nombre" class="form-label">Nombre</label>
-                                                <input type="text" id="nombre" class="form-control" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="cuit" class="form-label">Numero Fiscal</label>
-                                                <input type="text" id="cuit" class="form-control" required>
-
-                                            </div>
-                                            <button class="btn btn-primary">Enviar</button>
-                                            </form>     
-                                    </div>
-                                        `
-                    // Asociar el formulario al padre 
-                    contenedorDarseDeAlta.appendChild(alta);
-                    // EVENTO SUBMIT
-                       formulario.addEventListener("submit", ()=>{
-                      //Evito el comportamiento por default de formulario, de recargar la pagina
-                      event.preventDefault();
-                     const nombre = document.getElementById("nombre").value;
-                     const cuit = document.getElementById("cuit").value;
-                    // Crear un objeto cliente
-                    const cliente = new Cliente(nombre,cuit);
-                    arrayClientes.push(cliente);
-                     console.log(arrayClientes);
-                    // reseteamos el formulario
-                     formulario.reset();     
-                    // ALMACENAR EN LOCAL STORAGE
-                    // Utilizamos el metodo JSON.stringify()
-                    const arrayClientesJSON = JSON.stringify(arrayClientes);
-                    console.log(arrayClientesJSON), typeof arrayClientesJSON;
-                    // lo almaceno en el local storage
-                    localStorage.setItem("clientes", arrayClientesJSON);
-                        })
-             }
-               
-        /**   COMENTO ESTA FUNCION DE ALTA PORQUE EN LA TERCERA PREENTREGA VA DENTRO DEL FORM 
-                     function altaCliente (){
-                         let nombre = prompt("ingrese el nombre del cliente: ");
-                         let cuit = parseInt(prompt("ingrese el cuit de la empresa: "));
-                         let uelzPlan = prompt("Ingrese el plan de Uelz contratado: \n 1) Free \n 2) Gold");
-                        let cliente = new Cliente (nombre,cuit,uelzPlan);
-                         arrayClientes.push(cliente);
-                        console.log (arrayClientes);
-                        alert ("El cliente se ha registrado con exito")
-                       }
-        */
 
        
             // 2) Funcion REGISTRAR NUEVO COBRO        
@@ -216,18 +170,18 @@
                   // ---- AGREGAR NODOS -----
                 const contenedorNuevoCobro = document.getElementById("contenedorNuevoCobro");
                 //LIMPIAR HTML
-                 contenedorDarseDeAlta.innerHTML = "";
+                const  tablecontainer = document.getElementById("example-table")
+                tablecontainer.innerHTML = "";
+                
                  contenedorNuevoCobro.innerHTML = "";
                  contenedorConsultarCobros.innerHTML = "";
+                 contenedorConsultarComisiones.innerHTML = "";
                 //Crear formulario
                 const altaCobro = document.createElement("altaCobro");
                 altaCobro.innerHTML =`<div>
                                     <p>Ingresa los datos del cobro</p>
                                     <form id="formularioCobro">
-                                        <div class="mb-3">
-                                            <label for="cuit" class="form-label">Cuit de la empresa</label>
-                                            <input type="text" id="cuit" class="form-control" required>
-                                        </div>
+                                       
                                         <div class="mb-3">
                                             <label for="medioDePago" class="form-label">Medio de cobro</label>
                                             <select  id="ValorMedioDePago" class="form-select" aria-label="Default select example" required>
@@ -238,7 +192,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="monto" class="form-label">Monto cobrado</label>
-                                            <input type="text" id="monto" class="form-control" required>
+                                            <input type="number" id="monto" class="form-control" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="plan" class="form-label">Tipo de cobro</label>
@@ -250,19 +204,22 @@
                                         <button class="btn btn-primary">Enviar</button>
                                         </form>     
                                 </div>
-                                ` 
-                    
-                                                
+                                `               
                 // Asociar el formulario al padre 
                 contenedorNuevoCobro.appendChild(altaCobro);
                 // EVENTO SUBMIT
                 formularioCobro.addEventListener("submit", ()=>{
                     //Evito el comportamiento por default de formulario, de recargar la pagina
                     event.preventDefault();
-                    const cuit = document.getElementById("cuit").value;
+                    
                     const medioDePago = document.getElementById("ValorMedioDePago").value;
                     const monto = document.getElementById("monto").value;
-                    const plan = document.getElementById("ValorPlan").value;               
+                    const plan = document.getElementById("ValorPlan").value; 
+                    const companyNameJSON = localStorage.getItem("clientes");
+                    const cliente = JSON.parse(companyNameJSON);
+                    console.log(cliente[0].cuit);
+                    cuit = cliente[0].cuit
+                    console.log(cuit)                    
                 // Crear un objeto cobro
                 console.log(cuit, typeof cuit)
                 console.log(monto, typeof monto)
@@ -279,175 +236,208 @@
                 console.log(arrayCobrosJSON), typeof arrayCobrosJSON;
                 // lo almaceno en el local storage
                 localStorage.setItem("cobros", arrayCobrosJSON);
-                    })
+                Toastify({
+                    text:"Cobro guardado con exito",
+                    duration:3000,
+                    gravity: "top",
+                    position: "right",
+                    style:{
+                        background:"linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            })      
             }
             
              
-        /**  COMENTO ESTA FUNCION DE ALTA PORQUE EN LA TERCERA PREENTREGA VA DENTRO DEL FORM 
-                        Funcion para dar de alta un cobro
-                                function altaCobro (){
-                                let cliente = parseInt(prompt("ingrese el cuit del cliente: "));
-                                let medioDePago = prompt("ingrese el medio de pago: ");
-                                let monto = parseInt(prompt("ingrese el monto: "));
-                                let plan =  prompt("ingrese si fue un cobro UNICO o de SUSCRIPCION: ");
-                                let fecha = new Date()
-                                    let cobro = new Cobro (cliente,medioDePago,monto,plan,fecha);
-                                arrayCobros.push(cobro);
-                                    console.log (arrayCobros);
-                                    alert ("El cobro se ha registrado con exito")
-                                }
-         */
 
             // 3) Funcion CONSULTAR COBROS                   
             const consultarCobros = () =>{
                   // ---- AGREGAR NODOS -----
                   const contenedorConsultarCobros = document.getElementById("contenedorConsultarCobros");
                   //LIMPIAR HTML
-                   contenedorDarseDeAlta.innerHTML = "";
+                 
                    contenedorNuevoCobro.innerHTML = "";
                    contenedorConsultarCobros.innerHTML = "";
-                  //Crear formulario
-                  const consultaCobros = document.createElement("consultaCobros");
-                  consultaCobros.innerHTML =`<div>
-                                      <p>Ingrese el cuit del cliente</p>
-                                      <form id="formulario">
-                                          <div class="mb-3">
-                                              <label for="cuit" class="form-label">Cuit de la empresa</label>
-                                              <input type="text" id="cuit" class="form-control" required>
-                                          </div>
-                                          <button id="consultarCobrosConCuit" class="btn btn-primary">Consultar</button>
-                                        </form>
-                                          `
-                // Asociar el formulario al padre 
-                contenedorConsultarCobros.appendChild(consultaCobros);
-                 // EVENTO SUBMIT
-                 formulario.addEventListener("submit", ()=>{
-                    //Evito el comportamiento por default de formulario, de recargar la pagina
-                    event.preventDefault();  
-                   const cuit = document.getElementById("cuit").value;
-                  console.log(cuit);
-                  let totalcobrado = retornarCobros(cuit);
-                  console.log(totalcobrado);
+                   contenedorConsultarComisiones.innerHTML = "";
+                // Obtener CUIT DE LA EMPRESA
+                    const companyNameJSON = localStorage.getItem("clientes");
+                    const cliente = JSON.parse(companyNameJSON);
+                    console.log(cliente[0].cuit);
+                    cuit = cliente[0].cuit
+                    console.log(cuit)
+                tablaDeCobros(cuit);
+                //   let totalcobrado = retornarCobros(cuit);
+                //   console.log(totalcobrado);
                   // reseteamos el formulario
-                   formulario.reset();     
+                //    formulario.reset();     
                    
-                })   
-            }
+                }
+            
         
-                function retornarCobros (cuit) {
-                    let arrayCobrosDelCliente = filtrarCobrosDelCliente (cuit); 
-                    let arrayCobrosDelClienteTarjeta = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"tarjeta");
-                    let arrayCobrosDelClienteSepa = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"sepa");
-                    let arrayCobrosDelClienteAfterPay= filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"afterpay");
-                    let arrayCobrosTarjetaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"suscripcion");
-                    let arrayCobrostarjetaUnico = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"unico");
-                    let arrayCobrosDelClienteSepaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"suscripcion");
-                    let arrayCobrosDelClienteSepaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"unico");
-                    let arrayCobrosDelClienteAfterPaySuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"suscripcion");
-                    let arrayCobrosDelClienteAfterPayaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"unico");
-                    let totalcobrado = 0;
-                    
+                // function retornarCobros (cuit) {
+                //     let arrayCobrosDelCliente = filtrarCobrosDelCliente (cuit); 
+                //     let arrayCobrosDelClienteTarjeta = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"tarjeta");
+                //     let arrayCobrosDelClienteSepa = filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"sepa");
+                //     let arrayCobrosDelClienteAfterPay= filtrarCobrosDelClienteMediodePago (arrayCobrosDelCliente,"afterpay");
+                //     let arrayCobrosTarjetaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"suscripcion");
+                //     let arrayCobrostarjetaUnico = filtrarCobrosDelClienteMedioDePagoPlan(arrayCobrosDelClienteTarjeta,"unico");
+                //     let arrayCobrosDelClienteSepaSuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"suscripcion");
+                //     let arrayCobrosDelClienteSepaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteSepa,"unico");
+                //     let arrayCobrosDelClienteAfterPaySuscripcion = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"suscripcion");
+                //     let arrayCobrosDelClienteAfterPayaUnico = filtrarCobrosDelClienteMedioDePagoPlan (arrayCobrosDelClienteAfterPay,"unico");
+                //     let totalcobrado = 0;
+                // }
 
+                function tablaDeCobros(cuit){
+                    let arrayCobrosDelCliente = filtrarCobrosDelCliente (cuit); 
                     const tituloCliente =document.createElement("tituloCliente")
                     tituloCliente.innerHTML=`
                               <div>
                                   <hr>
-                                  <h2>Cobros del cliente <span>${cuit}</span> </h2>
-                                  <ul class="list-group list-group-horizontal">
-                                  <li class="list-group-item list-group-item-action fw-bold">Monto</li>
-                                  <li class="list-group-item list-group-item-action fw-bold">Medio De Pago</li>
-                                  <li class="list-group-item list-group-item-action fw-bold">Tipo de Plan</li>
-                                  </ul> 
+                                  <h2>Tus cobros</h2>
                               </div>  
-                              `
-                      contenedorConsultarCobros.appendChild(tituloCliente);  
-                      
+                         `
+                      contenedorConsultarCobros.appendChild(tituloCliente);   
+                    // Prueba tabulator
+                        //define some sample data
+                        tablecontainer = document.getElementById("example-table")
                        
-                    arrayCobrosDelCliente.forEach(cobro =>{
-                            totalcobrado += cobro.monto;
-                            // += es igual a poner totalCompra = totalCompra+producto.precio*producto.cantidad
-                            const TablaCobros =document.createElement("TablaCobros")
-                            TablaCobros.innerHTML=`
-                                     <div>
-                                     <ul class="list-group list-group-horizontal">
-                                            <li class="list-group-item list-group-item-action">${cobro.monto}</li>
-                                            <li class="list-group-item list-group-item-action">${cobro.medioDePago}</li>
-                                            <li class="list-group-item list-group-item-action">${cobro.plan}</li>
-                                    </ul>
-                                     </div>             `
-                            contenedorConsultarCobros.appendChild(TablaCobros);                    
-                       })
-                       const totalCobradoHtml =document.createElement("totalCobradoHtml")
-                      totalCobradoHtml.innerHTML=`
-                                <div>
-                                    <h3>El total de cobros es de <span>$${totalcobrado}</span></h3>
-                                    <hr>
-                                </div>  
-                                `
-                        contenedorConsultarCobros.appendChild(totalCobradoHtml);   
-                    return totalcobrado
-                    
-                }
+                        var tabledata = arrayCobrosDelCliente
+                        console.log(tabledata);
+                        const downloadButton = document.createElement("downloadButton")
+                        downloadButton.innerHTML =
+                                    `<button id="download-xlsx">Download XLSX</button>`
+                        contenedorConsultarCobros.appendChild(downloadButton);
+                        downloadButton.addEventListener("click", function(){
+                            table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+                        });
+                            //create Tabulator on DOM element with id "example-table"
+                        var table = new Tabulator(tablecontainer, {
+                            data:tabledata,           //load row data from array
+                            layout:"fitColumns",      //fit columns to width of table
+                            responsiveLayout:"hide",  //hide columns that dont fit on the table
+                            addRowPos:"top",          //when adding a new row, add it to the top of the table
+                            history:true,             //allow undo and redo actions on the table
+                            // pagination:"local",       //paginate the data
+                            // paginationSize:7,         //allow 7 rows per page of data
+                            // paginationCounter:"rows", //display count of paginated rows in footer
+                            movableColumns:true,      //allow column order to be changed
+                            initialSort:[             //set the initial sort order of the data
+                                {column:"fecha", dir:"desc"},
+                            ],  
+                            columnDefaults:{
+                                tooltip:true,         //show tool tips on cells
+                            },
+                            // height:205, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+                            maxHeight:"100%",
+                            progressiveLoad:"load", 
+                            columns:[ //Define Table Columns
+                                {title:"Monto", field:"monto", width:150, sorter:"number", bottomCalc:"sum"},
+                                {title:"Medio De Pago", field:"medioDePago", hozAlign:"lef", headerFilter:"input"},
+                                {title:"Tipo de Plan", field:"plan", headerFilter:true, headerFilterParams:
+                                                                                            {"suscripcion": "suscripcion",
+                                                                                            "unico":"unico"}},
+                                {title:"Fecha", field:"fecha", sorter:"date", hozAlign:"center"}
+                                // {title:"Medio De Pago", field:"medioDePago", hozAlign:"left", formatter:"progress"},
+                            ],
+                        });
+                        console.log(arrayCobrosDelCliente);
+                        //trigger an alert message when the row is clicked
+                        table.on("rowClick", function(e, row){ 
+                            Swal.fire({
+                                title: "Queres generar la factura de este cobro?",
+                                confirmButtonText: "Aceptar",
+                                showCancelButton: true,
+                                cancelButtonText: "Cancelar",
+                                 }).then((result) => { 
+                                    if(result.isConfirmed){
+                                       console.log("imprimir factura2")
+                                       imprimirFactura2 (1,"nombre del cliente","Nombre de la empresa",`[{\"name\": \"My Service\", \"price\": \"30\", \"units\": \"Hours\", \"discount\": \"1000\", \"quantity\": \"1000\"}]`,21,"Eur","2022-01-01")
+                                                            }
+                                                        })
+                                                        
+                                    })
+                                }
+                        
+                        
+                        
+                
 
 
-          
       // 4) Funcion CONSULTAR COMISIONES 
       const consultarComisiones2 = () =>{
         // ---- AGREGAR NODOS -----
         const contenedorConsultarComisiones = document.getElementById("contenedorConsultarComisiones");
         //LIMPIAR HTML
-         contenedorDarseDeAlta.innerHTML = "";
          contenedorNuevoCobro.innerHTML = "";
          contenedorConsultarCobros.innerHTML = "";
-         contenedorConsultarComisiones.innerHTML = "";
-        //Crear formulario
-        const consultaComisiones = document.createElement("consultaComisiones");
-        consultaComisiones.innerHTML =`<div>
-                            <p>Ingrese el cuit del cliente</p>
-                            <form id="formulario">
-                                <div class="mb-3">
-                                    <label for="cuit" class="form-label">Cuit de la empresa</label>
-                                    <input type="text" id="cuit" class="form-control" required>
-                                </div>
-                               
-                                <button id="consultarCobrosConCuit" class="btn btn-primary">Consultar</button>
-                              </form>
-                                `
-      // Asociar el formulario al padre 
-      contenedorConsultarComisiones.appendChild(consultaComisiones);
-       // EVENTO SUBMIT
-       formulario.addEventListener("submit", ()=>{
-          //Evito el comportamiento por default de formulario, de recargar la pagina
-          event.preventDefault();  
-         const cuit = document.getElementById("cuit").value;
-        console.log(cuit);
-        let totalcomisiones = retornarComisiones(cuit);
-        console.log(totalcomisiones);
-        // reseteamos el formulario
-         formulario.reset();     
-      })   
-  }
+         contenedorConsultarComisiones.innerHTML = "";  
+         const  tablecontainer = document.getElementById("example-table")
+                tablecontainer.innerHTML = "";
+                   
+         // Obtener CUIT DE LA EMPRESA
+         const companyNameJSON = localStorage.getItem("clientes");
+         const cliente = JSON.parse(companyNameJSON);
+         console.log(cliente[0].cuit);
+         cuit = cliente[0].cuit
+         console.log(cuit)
+         //Calculo y visualizacion de comisiones de tarjeta
+                //Calculo
+         let tarjetavariables= CalculoComisionesVariables(cuit,"tarjeta");
+         let tarjetaSuscripcion = CalculoComisionesSuscripción(cuit,"tarjeta");
+         let tarjetaFijas = CalculoComisionesfijas(cuit,"tarjeta");
+         let totaltarjetas = tarjetaFijas+tarjetaSuscripcion+tarjetavariables
+         //Calculo  de comisiones de Sepa
+                let sepavariables= CalculoComisionesVariables(cuit,"sepa");
+                let sepaSuscripcion = CalculoComisionesSuscripción(cuit,"sepa");
+                let sepaFijas = CalculoComisionesfijas(cuit,"sepa");
+                let totalsepa = sepavariables+sepaSuscripcion+sepaFijas;
+        //Calculo  de comisiones de afterpay
+        let afterPayVariables= CalculoComisionesVariables(cuit,"afterpay");
+        let afterPaySuscripcion = CalculoComisionesSuscripción(cuit,"afterpay");
+        let afterPayFijas = CalculoComisionesfijas(cuit,"afterpay");
+        let totalafterPay = afterPayVariables+afterPaySuscripcion+afterPayFijas
+                // Visualizacion 
+         const HtmlComisioens = document.createElement("div");
+         HtmlComisioens.innerHTML = 
+            `<div class="list-group">
+                <h5>Comisiones por cobros con tarjeta</h5>
+                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Comisiones variables : $ ${tarjetavariables}</li>
+                    <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${tarjetaSuscripcion}</li>
+                    <li class="list-group-item">Comisiones por cobros totales :$ ${tarjetaFijas}</li>
+                    <li class="list-group-item active">Total comisione de tarjeta :$ ${totaltarjetas}</li>
+                 </ul>
+                <br>
+                <div class="list-group">
+                       <h5>Comisiones por cobros con SEPA</h5>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item">Comisiones variables : $ ${sepavariables}</li>
+                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${sepaSuscripcion}</li>
+                           <li class="list-group-item">Comisiones por cobros totales :$ ${sepaFijas}</li>
+                           <li class="list-group-item active">Total comisione de sepa :$ ${totalsepa}</li>
+                        </ul>
+                       </div>
+                       <div class="list-group">
+                       <h5>Comisiones por cobros con AfterPay</h5>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item">Comisiones variables : $ ${afterPayVariables}</li>
+                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${afterPaySuscripcion}</li>
+                           <li class="list-group-item">Comisiones por cobros totales :$ ${afterPayFijas}</li>
+                           <li class="list-group-item active">Total comisione de AfterPay :$ ${totalafterPay}</li>
+                        </ul>
+                       </div>
+                       
+                       ` 
+        
+         contenedorConsultarComisiones.appendChild(HtmlComisioens);
+         
+      }
+
+  
 
 
-        // Funcion para calcular comisiones
-        function consultarComisiones(){
-            let cuit = parseInt(prompt("ingrese el cuit del cliente: "));
-            CalculoComisionesTarjeta (cuit);
-        }
-
-        // Funcion para eliminar cobro
-        function bajaCobro (){
-            let dni = ParseInt(prompt("ingrese el dni del cliente: "));
-            let cliente = arrayClientes.find(cliente => cliente.dni === dni);
-            let indice = arrayClientes.indexOf(cliente);
-            arrayClientes.splice(indice,1);
-            console.log (arrayClientes);
-        }
-
-        // FUncion para salir
-        function Salir (){
-            alert("Gracias por utilizar nuestros servicios")
-        }
+    
 
 //// ------------  FUNCIONES PARA FILTRAR y SUMAR COBROS ----------
           
@@ -481,143 +471,86 @@
                     return arrayCobrosDelClienteTarjetaPlan;
                }       
     
-               
-
 
 
 //// ------------  FUNCIONES CALCULO COMISIONES ----------
 
-//function calculoComisiones(cuit)
-// array cobros del cliente
-//array cobros del cliente con tarjeta
-//array cobros del cliente con sepa
-//array cobros del cliente con after pay
-// Sumarizar montos de los 4 array
-// contar transacciones de 4 array
-//llamar a las fuciones de calculo de comisiones por medio de pago
 
-
-
-
-function CalculoComisionesTarjeta (cuit) {
-        // Filtro y totalizador para cobros de suscripción con tarjeta
-        const arrayCobrosTarjetaSuscripcion= arrayCobros.filter(Cobro => (Cobro.cliente === cuit)& (Cobro.medioDePago == "tarjeta")& (Cobro.plan == "suscripcion") );
-        console.log ("  Filter: ")
-        console.log (arrayCobrosTarjetaSuscripcion);
-        let totalCobradoTarjetaSuscripcion = arrayCobrosTarjetaSuscripcion.reduce ((acumulador,elemento) => acumulador + elemento.monto,0)
-        console.log (cuit)
-        console.log (totalCobradoTarjetaSuscripcion);
-        // FIltro y totalizador para cobros con tarjeta
-        const arrayCobrosTarjeta= arrayCobros.filter(Cobro => (Cobro.cliente === cuit)& (Cobro.medioDePago == "tarjeta"));
-        console.log ("  Filter: ")
-        console.log (arrayCobrosTarjeta);
-        let totalCobradoTarjeta = arrayCobrosTarjeta.reduce ((acumulador,elemento) => acumulador + elemento.monto,0)
-        console.log (cuit)
-        console.log (totalCobradoTarjeta);
-        let cantidadCobrosTarjeta = arrayCobrosTarjeta.length
-        console.log (cantidadCobrosTarjeta);
-        let sumaComisionTarjetaSuscricion = comisionesPorSuscripcion(totalCobradoTarjetaSuscripcion);
-        let sumaComisionTarjetaFijas = comisionesFijas(cantidadCobrosTarjeta);
-        let sumaComisionTarjetaVariables = comisionesVariables (totalCobradoTarjeta);
-       let comisionesTotales = sumaComisionTarjetaSuscricion + sumaComisionTarjetaFijas + sumaComisionTarjetaVariables
-        console.log (comisionesTotales);
+// Calculo de comisiones Variables: Monto total cobrado por medio de pago * % de comisiones
+function CalculoComisionesVariables (cuit,medioDePago){
+    console.log(cuit);
+    console.log(arrayCobros);
+    const arrayMedioDePago2 = filtrarCobrosDelClienteMediodePago(arrayCobros,medioDePago)
+    let totalCobrado2 = arrayMedioDePago2.reduce ((acumulador,elemento) => acumulador + elemento.monto,0)
+    let comisionMedioDePagoVariable = arrayMedioDePago
+    .filter (MedioDePago => MedioDePago.nombre == medioDePago) 
+    .map (MedioDePago => MedioDePago.comisionVariable);
+    console.log (comisionMedioDePagoVariable)
+    let sumaComisionMedioDePagoVariable2 = comisionMedioDePagoVariable * totalCobrado2
+    console.log(sumaComisionMedioDePagoVariable2)
+    return sumaComisionMedioDePagoVariable2
 }
 
 
-// ----- Calculo de comisiones tarjeta -----
-    function comisionesPorSuscripcion (totalCobrado) {
-        // Comisiones por suscripción
-        let comisionTarjetaSuscripción = arrayMedioDePago
-        .filter (MedioDePago => MedioDePago.nombre == "tarjeta")
-        .map (MedioDePago => MedioDePago.comisionSuscripcion);
-        let sumaComisionTarjetaSuscripcion = comisionTarjetaSuscripción * totalCobrado;
-        console.log ("Comisiones suscripcion");
-        console.log (comisionTarjetaSuscripción);
-        console.log (sumaComisionTarjetaSuscripcion);
-        return sumaComisionTarjetaSuscripcion;
-    }        
+// Calculo de comisiones Suscricion: Cantidad de cobros con medio de pago * % de comisiones
+function CalculoComisionesfijas (cuit,medioDePago){
+    console.log(cuit);
+    console.log(arrayCobros);
+    const arrayMedioDePago2 = filtrarCobrosDelClienteMediodePago(arrayCobros,medioDePago)
+    let cantidadCobrosMedioDePago = arrayMedioDePago2.length
+    let comisionMedioDePagoFija = arrayMedioDePago
+    .filter (MedioDePago => MedioDePago.nombre == medioDePago) 
+    .map (MedioDePago => MedioDePago.comisionFija);
+    let sumaComisionTarjetaFija = comisionMedioDePagoFija * cantidadCobrosMedioDePago;
+    console.log ("Comsiones fija");
+    console.log (comisionMedioDePagoFija);
+    console.log (sumaComisionTarjetaFija);
+    return sumaComisionTarjetaFija;
+
+}
+
+// Calculo de comisiones Suscricion: Monto de suscripcion con medio de pago * % de comisiones
+function CalculoComisionesSuscripción (cuit,medioDePago){
+    console.log(cuit);
+    console.log(arrayCobros);
+    const arrayMedioDePago2 = filtrarCobrosDelClienteMediodePago(arrayCobros,medioDePago)
+    const arraysuscripcion = filtrarCobrosDelClienteMedioDePagoPlan(arrayMedioDePago2,"suscripcion")
+    let totalCobradoMedioDePagoSuscripcion = arraysuscripcion.reduce ((acumulador,elemento) => acumulador + elemento.monto,0)
+    // let sumaComisionTarjetaSuscricion = comisionesPorSuscripcion(totalCobradoMedioDePagoSuscripcion);
+    let comisionMedioDePagoSuscripción = arrayMedioDePago
+    .filter (MedioDePago => MedioDePago.nombre == medioDePago)
+    .map (MedioDePago => MedioDePago.comisionSuscripcion);
+    let sumaComisionTarjetaSuscripcion = comisionMedioDePagoSuscripción * totalCobradoMedioDePagoSuscripcion;
+    console.log ("Comisiones suscripcion");
+    console.log (comisionMedioDePagoSuscripción);
+    console.log (sumaComisionTarjetaSuscripcion);
+    return sumaComisionTarjetaSuscripcion;
+}
+
+
+
+    //--- API FACTURA 1 ----
+
+function imprimirFactura2(number,buyer_company_name,seller_company_name,services,tax,currency,date){
+    const options1 = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': '2cba9dff67mshf0648bf9f552783p16945ajsna0cdb96f6fa9',
+            'X-RapidAPI-Host': 'invoices-generator.p.rapidapi.com',  
+        }
+     };
+
+    fetch(`https://invoices-generator.p.rapidapi.com/generate-invoice?number=${number}&buyer_company_name=${buyer_company_name}&seller_company_name=${seller_company_name}&services=${services}&tax=${tax}&currency=${currency}&date=${date}&buyer_tax_number=Buyer%20Tax%20Number&buyer_vat_number=Buyer%20VAT%20Number&buyer_address=Buyer%20Address&seller_tax_number=Seller%20Tax%20Number&seller_vat_number=Seller%20VAT%20Number&seller_address=Seller%20Address&seller_bank_name=Seller%20Bank%20Name&seller_bank_account=Seller%20Bank%20Account&shipping=30&service_fee=10&due_date=2022-01-01&logo=https%3A%2F%2Fcdn.logo.com%2Fhotlink-ok%2Flogo-social.png&locale=en`, options1)
+	.then(response => response.json())
+	.then((response) => {
+        const urlFactura = response 
+        console.log(urlFactura, typeof urlFactura);
+        console.log(urlFactura.url)
+        window.open(urlFactura.url,"_blank");
+    })          
+	.catch(err => console.error(err));
+        }
         
-    function comisionesFijas (cantidadDeCobros) {
-        // Comisiones por comision fija por transacción
-        let comisionTarjetaFija = arrayMedioDePago
-        .filter (MedioDePago => MedioDePago.nombre == "tarjeta") 
-        .map (MedioDePago => MedioDePago.comisionFija);
-        let sumaComisionTarjetaFija = comisionTarjetaFija * cantidadDeCobros;
-        console.log ("Comsiones fija");
-        console.log (comisionTarjetaFija);
-        console.log (sumaComisionTarjetaFija);
-        return sumaComisionTarjetaFija;
-    }
+        
 
-    function comisionesVariables (totalCobrado) {
-        // Comisiones por comision variable por monto
-        let comisionTarjetaVariable = arrayMedioDePago
-        .filter (MedioDePago => MedioDePago.nombre == "tarjeta") 
-        .map (MedioDePago => MedioDePago.comisionVariable);
-        console.log (comisionTarjetaVariable)
-        let sumaComisionTarjetaVariable = comisionTarjetaVariable * totalCobrado
-        console.log ("Comisiones variable");
-        console.log (comisionTarjetaVariable)
-        console.log (sumaComisionTarjetaVariable);
-        return sumaComisionTarjetaVariable;
-    }
-
-
-
-
-
-
-//  ----- EJECUCION DEL PROGRAMA-----
-
-// let opcion = menu ()
-//     switch(opcion){
-//         case 1:
-//             altaCliente()
-//             break;
-//         case 2:
-//             altaCobro();
-//             break;
-//         case 3:
-//             consultarCobros();
-//             break;
-//         case 4:
-//             consultarComisiones();
-//             break;
-//         case 5:
-//             Salir();
-//             break;
-//         default:
-//             alert("opcion incorrecta");
-//             break;
-//     }
-
-
-
-
-
-
-
-
-
-
-
-
-    // COMENTARIOS DE CLASESSS
-
-    /// ---- CLASE FUNCIONES DE ORDEN SUPERIOR ---------
-            // 3) Filter: recibe una funcion comparadora por parametro
-                // Retorna un nuevo array con los elementos que cumplan con la condicion
-                // si no hay concidencia retorna una array vacio
-                    // const arrayProductosMenos200 = arrayProductos.filter(producto => producto.precio < 200);
-                    // console.log ("Filter: ")
-                    // console.log (arrayProductosMenos200);
-
-
-            // 6) REDUCE(): Nos permite obtener un unico valor despues de iterar sobre un array
-                // por ejemplo el total de un carrito. 
-                // podemos trabajar con dos paramentros: un acumulador y el elemento a operar
-                // tambien debemos colocar el valor inicial del acumulador
-                    // let totalPrecio = arrayProductos.reduce((acumulador, elemento) => acumulador + elemento.precio,0);
-                    /// console.log (totalPrecio);
-
-// ----------------------------------------------------------
+    
