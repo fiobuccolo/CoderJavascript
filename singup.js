@@ -45,7 +45,7 @@ class Cliente {
        // lo almaceno en el local storage
        localStorage.setItem("clientes", arrayClientesJSON);
        // redirijo al index
-          window.location.href="index.html"
+          window.location.href="pages/uelzapp.html"
          
         
 

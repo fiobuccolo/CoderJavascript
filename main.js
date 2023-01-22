@@ -142,17 +142,38 @@
         // 2) Funcion REGISTRAR NUEVO COBRO 
         const NuevoCobro = document.getElementById("NuevoCobro");
        NuevoCobro.addEventListener("click",()=>{
+            
             nuevoCobro();
         });
         // 3) Funcion CALCULAR COMISIONES
         const CalcularComisiones = document.getElementById("CalcularComisiones");
         CalcularComisiones.addEventListener("click",()=>{
-            consultarComisiones2();
+            console.log(arrayCobros.length)
+            if (arrayCobros.length === 0){
+                const contenedorConsultarCobros = document.getElementById("contenedorConsultarCobros");
+                contenedorConsultarCobros.innerText="";
+                const mensajeDeError = document.createElement("mensajeDeError")
+                mensajeDeError.innerHTML    =`<div><p>Aun no tenes cobros generados</p></div>`
+                contenedorConsultarCobros.appendChild(mensajeDeError);
+                console.log("error")}
+                else{
+                    console.log("else??") 
+            consultarComisiones2()};
         });
         // 4) Funcion CONSULTAR COBROS 
         const ConsultarCobros = document.getElementById("ConsultarCobros");
-        ConsultarCobros.addEventListener("click",()=>{     
-            consultarCobros();
+        ConsultarCobros.addEventListener("click",()=>{    
+            console.log(arrayCobros.length)
+            if (arrayCobros.length === 0){
+                const contenedorConsultarCobros = document.getElementById("contenedorConsultarCobros");
+                contenedorConsultarCobros.innerText="";
+                const mensajeDeError = document.createElement("mensajeDeError")
+                mensajeDeError.innerHTML    =`<div><p>Aun no tenes cobros generados</p></div>`
+                contenedorConsultarCobros.appendChild(mensajeDeError);
+                console.log("error")}
+                else{
+                    console.log("else??") 
+            consultarCobros()};
         });
         // 5) Funcion ELIMINAR COBRO 
         // const EliminarCobro = document.getElementById("EliminarCobro");
@@ -255,7 +276,6 @@
                   // ---- AGREGAR NODOS -----
                   const contenedorConsultarCobros = document.getElementById("contenedorConsultarCobros");
                   //LIMPIAR HTML
-                 
                    contenedorNuevoCobro.innerHTML = "";
                    contenedorConsultarCobros.innerHTML = "";
                    contenedorConsultarComisiones.innerHTML = "";
