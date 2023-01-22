@@ -423,28 +423,28 @@
             `<div class="list-group">
                 <h5>Comisiones por cobros con tarjeta</h5>
                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Comisiones variables : $ ${tarjetavariables}</li>
-                    <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${tarjetaSuscripcion}</li>
-                    <li class="list-group-item">Comisiones por cobros totales :$ ${tarjetaFijas}</li>
-                    <li class="list-group-item active">Total comisione de tarjeta :$ ${totaltarjetas}</li>
+                    <li class="list-group-item">Comisiones variables : $ ${tarjetavariables.toFixed(2)}</li>
+                    <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${tarjetaSuscripcion.toFixed(2)}</li>
+                    <li class="list-group-item">Comisiones por cobros totales :$ ${tarjetaFijas.toFixed(2)}</li>
+                    <li class="list-group-item active">Total comisione de tarjeta :$ ${totaltarjetas.toFixed(2)}</li>
                  </ul>
                 <br>
                 <div class="list-group">
                        <h5>Comisiones por cobros con SEPA</h5>
                         <ul class="list-group list-group-flush">
-                           <li class="list-group-item">Comisiones variables : $ ${sepavariables}</li>
-                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${sepaSuscripcion}</li>
-                           <li class="list-group-item">Comisiones por cobros totales :$ ${sepaFijas}</li>
-                           <li class="list-group-item active">Total comisione de sepa :$ ${totalsepa}</li>
+                           <li class="list-group-item">Comisiones variables : $ ${sepavariables.toFixed(2)}</li>
+                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${sepaSuscripcion.toFixed(2)}</li>
+                           <li class="list-group-item">Comisiones por cobros totales :$ ${sepaFijas.toFixed(2)}</li>
+                           <li class="list-group-item active">Total comisione de sepa :$ ${totalsepa.toFixed(2)}</li>
                         </ul>
                        </div>
                        <div class="list-group">
                        <h5>Comisiones por cobros con AfterPay</h5>
                         <ul class="list-group list-group-flush">
-                           <li class="list-group-item">Comisiones variables : $ ${afterPayVariables}</li>
-                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${afterPaySuscripcion}</li>
-                           <li class="list-group-item">Comisiones por cobros totales :$ ${afterPayFijas}</li>
-                           <li class="list-group-item active">Total comisione de AfterPay :$ ${totalafterPay}</li>
+                           <li class="list-group-item">Comisiones variables : $ ${afterPayVariables.toFixed(2)}</li>
+                           <li class="list-group-item">Comisiones por cobros de suscripcióm :$ ${afterPaySuscripcion.toFixed(2)}</li>
+                           <li class="list-group-item">Comisiones por cobros totales :$ ${afterPayFijas.toFixed(2)}</li>
+                           <li class="list-group-item active">Total comisione de AfterPay :$ ${totalafterPay.toFixed(2)}</li>
                         </ul>
                        </div>
                        
